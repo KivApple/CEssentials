@@ -5,7 +5,7 @@ that are missing from standard library.
 
 ## Requirements
 
-- CMake 3.1+
+- CMake 3.1+ (optional)
 - GCC (including MinGW), Clang or MSVC compiler 
   (probably other compilers with C11 support)
 
