@@ -144,6 +144,9 @@ CStr CStr_newFormatV(const char *fmt, va_list args) {
 	va_copy(argsCopy, args);
 	int count = vsnprintf(NULL, 0, fmt, argsCopy);
 	va_end(argsCopy);
+	if (count < 0) {
+		return CStr_new(fmt);
+	}
 	CStr s = CStr_alloc((size_t) count);
 	if (!s) return NULL;
 	vsnprintf(s, count + 1, fmt, args);
@@ -165,6 +168,9 @@ CStr CStr_appendFormatV(CStr s, const char *fmt, va_list args) {
 	va_copy(argsCopy, args);
 	int count = vsnprintf(NULL, 0, fmt, argsCopy);
 	va_end(argsCopy);
+	if (count < 0) {
+		return CStr_append(s, fmt);
+	}
 	if (CStr_header(s)->size + count > CStr_header(s)->capacity) {
 		size_t newCapacity = CStr_header(s)->capacity ? CStr_header(s)->capacity * 2 : 16;
 		while (newCapacity < CStr_header(s)->size + count) {
