@@ -180,7 +180,7 @@ arbitrary data.
 Example:
 
     CStr s = CStr_new("Hello");
-    s = CStr_append(" world");
+    s = CStr_append(s, " world");
     printf("%s\n", s); // Use as a usual NULL-terminated string
     CStr_free(s);
 
