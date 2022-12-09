@@ -162,7 +162,6 @@ CStr CStr_newFormat(const char *fmt, ...) {
 	return s;
 }
 
-
 CStr CStr_appendFormatV(CStr s, const char *fmt, va_list args) {
 	va_list argsCopy;
 	va_copy(argsCopy, args);

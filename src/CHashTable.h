@@ -174,7 +174,7 @@ static inline bool CHashTable_intEq(int a, int b) {
 static inline size_t CHashTable_strHash(const char *s) {
 	size_t h = (size_t) *s;
 	if (h) {
-		for (++s; *s; ++s) h = (h << 5) - h + (size_t) *s;
+		for(++s; *s; ++s) h = (h << 5) - h + (size_t) *s;
 	}
 	return h;
 }
