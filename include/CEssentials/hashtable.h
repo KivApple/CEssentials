@@ -248,7 +248,7 @@ static inline size_t ht_next_valid_index(const char *flags, size_t capacity, siz
 #define ht_int_hash(x) ((size_t) (x))
 
 /** Default equality implementation for integers */
-#define ht_int_eq(a) ((a) == (b))
+#define ht_int_eq(a, b) ((a) == (b))
 
 /** Reserve implementation for the hash table with integer keys */
 #define ht_reserve_int(h, value_type, new_capacity, success) \
