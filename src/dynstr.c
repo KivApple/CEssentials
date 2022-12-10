@@ -228,7 +228,7 @@ void dynstr_range(dynstr s, ptrdiff_t start, ptrdiff_t count) {
 	size_t end;
 	if (count >= 0) {
 		end = begin + (size_t) count;
-		if (end < begin) { // Integer overflow
+		if (end < begin /* Integer overflow */ || end > dynstr_size(s)) {
 			end = dynstr_size(s);
 		}
 	} else {
