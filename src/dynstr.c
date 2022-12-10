@@ -152,8 +152,8 @@ dynstr dynstr_copy(dynstr dest, dynstr src) {
 }
 
 static inline dynstr dynstr_grow(dynstr s, size_t delta) {
-	size_t new_capacity = dynstr_capacity(s) + delta;
-	if (new_capacity < delta) {
+	size_t new_capacity = dynstr_size(s) + delta;
+	if (new_capacity < delta) { // Integer overflow
 		dynstr_free(s);
 		return NULL;
 	}
