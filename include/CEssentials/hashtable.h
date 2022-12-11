@@ -96,7 +96,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		(success) = true; \
 		break; \
 	} \
-	size_t ht_new_capacity = (new_capacity) + ((new_capacity) >> 1) + ((new_capacity) >> 2); \
+	size_t ht_new_capacity = (new_capacity); \
 	roundupsize(ht_new_capacity); \
 	if (ht_new_capacity < (new_capacity)) { /* Integer overflow */ \
 		(success) = false; \
