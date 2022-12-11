@@ -17,7 +17,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /**
  * @file
- * @brief Dynamic strings that are compatible with normal NULL-terminated C-string
+ * @brief Dynamic strings that are compatible with normal NULL-terminated C-strings - splitting and joining utilities.
  */
 
 #include "dynstr.h"
