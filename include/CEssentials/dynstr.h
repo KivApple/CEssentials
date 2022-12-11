@@ -19,6 +19,30 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * @file
  * @brief Dynamic strings that are compatible with normal NULL-terminated C-string
  * @details
+ * You can use dynstr in place of normal NULL-terminated C-strings as long as you are not changing its
+ * length, so it's always safe to pass dynstr to a function which accepts `const char*` and sometimes dynstr
+ * can be passed to a function that accepts `char*` (for example, as an I/O buffer if you resize dynstr first).
+ * dynstr can hold NULL-characters inside, but it will affect C-string compatibility (dynstr will be seen as truncated
+ * to the code which accepts NULL-terminated strings). dynstr guaranteed to have NULL character at the end 
+ * (that is not counted in its size and capacity).
+ * 
+ * If dynstr function can increase its size, it might trigger reallocation of the underlying memory chunk,
+ * such functions return a new pointer as a result (it can be either the same as input or a new one). You
+ * should always use this new pointer and consider previous pointer values as invalidated. If you store dynstr pointer
+ * in multiple structures/variables you must update all of them after invalidation. You might want to wrap your dynstr into
+ * another heap allocated struct or don't modify the size of shared dynstr at all.
+ * 
+ * If case of memory allocation failure (out of memory or size_t overflow) any function will return NULL and previously
+ * allocated memory chunk (if any) will be freed. So don't have a memory leak. Of course you can just ignore NULL's if you
+ * aren't going to implement out of memory handling. Please note that the most of dynstr functions (except when it is explicitly stated
+ * such as dynstr_free()) don't accept NULL values as an arguments.
+ * 
+ * dynstr explicitly stores its length, so size computation has O(1) complexity. Also they can allocate more memory than needed
+ * while you are doing multiple appending, so it might reduce number of total memory allocations.
+ *
+ * All dynstr instances must be freed using a special function dynstr_free(). You cannot pass dynstr instance to a usual libc free()
+ * function, because dynstr has a special header just before it's character data.
+ *
  * Example of usage:
  * \code
  * dynstr s = dynstr_new("Hello");
