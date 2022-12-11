@@ -23,13 +23,13 @@ library will be available to your code.
 ## Contents
 
 - [dynstr.h](include/CEssentials/dynstr.h) - 
-  Dynamic strings that are compatible with NULL terminated C-string
+  Dynamic strings that are compatible with NULL terminated C-string.
 - [dynstrsplit.h](include/CEssentials/dynstrsplit.h) -
   Splitting C-string by a separator into a `dynvec` of `dynstr`.
 - [dynvec.h](include/CEssentials/dynvec.h) -
   Generic dynamic vector container.
 - [hashtable.h](include/CEssentials/hashtable.h) -
-  Generic hash table container with quadratic lookup.
+  Generic hash table container with [quadratic probing](https://en.wikipedia.org/wiki/Quadratic_probing).
 
 ## LICENSE
 
