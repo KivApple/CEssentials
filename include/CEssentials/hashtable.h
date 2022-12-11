@@ -173,12 +173,12 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 } while (0)
 
 /**
- * Inserts an element inside the hash table and returns its index.
+ * Insert an element inside the hash table and return its index.
  *
- * \p absent specifies the operation result. 1 means that element was successfully inserted.
- * 0 means that element was already existed in the hash table (and its index was returned),
- * -1 means that memory allocation failure happens (\p index won't be assigned and shouldn't be used
- * ever with ht_valid()).
+ * \p absent specifies the operation result. 1 means that the element was successfully inserted.
+ * 0 means that the element with given key was already existed in the hash table (and its index was returned),
+ * -1 means that memory allocation failure happened (\p index won't be assigned and shouldn't be used
+ * even with ht_valid()).
  */
 #define ht_put(h, key_type, value_type, key, index, absent, hash_func, eq_func) do { \
 	bool ht_success; \
@@ -208,7 +208,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	} \
 } while (0)
 
-/** Deletes element from the hash table by its index. */
+/** Delete an element from the hash table by its index. */
 #define ht_delete(h, index) do { \
 	(h).flags[(index)] = 2; \
 	(h).size--; \
