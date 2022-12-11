@@ -85,7 +85,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define ht_capacity(h) ((h).capacity)
 
 /** Clear hash table */
-#define ht_clear(h) do { (h).size = 0; memset((h).flags, 0, (h).capacity); } while (0)
+#define ht_clear(h) do { (h).size = 0; if ((h).flags) { memset((h).flags, 0, (h).capacity); } } while (0)
 
 /**
  * Resize hash table to be able to hold at least new_capacity elements.
