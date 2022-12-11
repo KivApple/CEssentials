@@ -238,8 +238,8 @@ static inline size_t ht_next_valid_index(const char *flags, size_t capacity, siz
 
 /** For each loop over the hash table using provided \p index variable.
  *
- * You don't need to check index validity before access keys and values.
- * You can call kt_delete() on provided index. */
+ * You don't need to check index validity before access keys and values when using this macro.
+ * You can safely call kt_delete() on provided index and either continue or break iteration. */
 #define ht_for_each(h, index) for ( \
 	size_t index = ht_next_valid_index((h).flags, (h).capacity, ht_begin((h))); \
 	index != ht_end((h)) && ht_valid((h), index); \
