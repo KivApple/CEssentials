@@ -102,13 +102,15 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		(success) = false; \
 		break; \
 	} \
-	if (ht_new_capacity <= (h).capacity) { \
-		ht_new_capacity <<= 1; \
-	} \
-	if (ht_new_capacity <= (h).capacity) { /* Integer overflow */ \
-		(success) = false; \
-		break; \
-	} \
+	size_t ht_new_max_size = (ht_new_capacity >> 1) + (ht_new_capacity >> 2); \
+	if (ht_new_max_size < (new_capacity)) { \
+    	ht_new_capacity <<= 1; \
+		if (ht_new_capacity < (new_capacity)) { /* Integer overflow */ \
+			(success) = false; \
+			break; \
+		} \
+		ht_new_max_size = (ht_new_capacity >> 1) + (ht_new_capacity >> 2); \
+    } \
 	char *ht_new_flags = malloc(ht_new_capacity); \
 	if (!ht_new_flags) { \
 		(success) = false; \
@@ -147,7 +149,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	(h).keys = ht_new_keys; \
 	(h).values = ht_new_values; \
 	(h).capacity = ht_new_capacity; \
-	(h).max_size = (ht_new_capacity >> 1) + (ht_new_capacity >> 2); \
+	(h).max_size = ht_new_max_size; \
 	(success) = true; \
 } while (0)
 
