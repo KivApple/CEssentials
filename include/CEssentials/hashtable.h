@@ -193,7 +193,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	size_t ht_mask = (h).capacity - 1; \
 	(index) = hash_func(key) & ht_mask; \
 	size_t ht_step = 0; \
-	while ((h).flags[(index)] == 2 || ((h).flags[(index)] == 1 && !eq_func((h).keys[(index)], (key)))) { \
+	while ((h).flags[(index)] == 1 && !eq_func((h).keys[(index)], (key))) { \
 		(index) = ((index) + ++ht_step) & ht_mask; \
 	} \
 	if ((h).flags[(index)] == 1) { \
