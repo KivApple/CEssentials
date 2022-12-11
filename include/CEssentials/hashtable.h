@@ -161,10 +161,10 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	if (!(h).size) { \
 		(result) = 0; \
 		break; \
-	}                                                      \
-	size_t ht_mask = (h).capacity - 1;                     \
-	(result) = hash_func(key) & ht_mask;                   \
-	size_t ht_step = 0;                                    \
+	} \
+	size_t ht_mask = (h).capacity - 1; \
+	(result) = hash_func(key) & ht_mask; \
+	size_t ht_step = 0; \
 	while ((h).flags[(result)] == 2 || ((h).flags[(result)] == 1 && !eq_func((h).keys[(result)], (key)))) { \
 		(result) = ((result) + ++ht_step) & ht_mask; \
 	} \
@@ -189,10 +189,10 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	if (!ht_success) { \
 		(absent) = -1; \
 		break; \
-	}                                                      \
-	size_t ht_mask = (h).capacity - 1;                     \
-	(index) = hash_func(key) & ht_mask;                   \
-	size_t ht_step = 0;                                    \
+	} \
+	size_t ht_mask = (h).capacity - 1; \
+	(index) = hash_func(key) & ht_mask; \
+	size_t ht_step = 0; \
 	while ((h).flags[(index)] == 2 || ((h).flags[(index)] == 1 && !eq_func((h).keys[(index)], (key)))) { \
 		(index) = ((index) + ++ht_step) & ht_mask; \
 	} \
