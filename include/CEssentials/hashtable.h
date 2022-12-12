@@ -125,7 +125,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	value_type *ht_new_values = malloc(ht_new_capacity * sizeof(value_type)); \
 	if (!ht_new_values) { \
 		free(ht_new_keys); \
-		free(ht_new_values); \
+		free(ht_new_flags); \
 		(success) = false; \
 		break; \
 	} \
