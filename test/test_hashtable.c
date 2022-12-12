@@ -21,6 +21,26 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <CEssentials/hashtable.h>
 #include "test_hashtable.h"
 
+void test_hashtable_overflow(void) {
+	size_t index = 0;
+	int absent;
+	HT(const char*, int) ht;
+	ht_init(ht);
+	
+	ht_put_str(ht, int, "10", index, absent);
+	ht_put_str(ht, int, "20", index, absent);
+	ht_put_str(ht, int, "30", index, absent);
+	
+	ht_get_str(ht, "10", index);
+	ht_delete(ht, index);
+	
+	ht_put_str(ht, int, "40", index, absent);
+	
+	ht_get_str(ht, "10", index); // Will hang is there is a bug
+	
+	ht_destroy(ht);
+}
+
 void test_hashtable(void) {
 	size_t index = 0;
 	int absent;
@@ -84,6 +104,8 @@ void test_hashtable(void) {
 	assert(!ht_valid(ht, index));
 	
 	ht_destroy(ht);
+	
+	test_hashtable_overflow();
 	
 	printf("hashtable.h passed all tests!\n");
 }
