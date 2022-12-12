@@ -54,7 +54,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /** A hash table struct definition */
 #define HT(key_type, value_type) struct { \
-	size_t size, max_size, capacity; \
+	size_t size, used, max_used, capacity; \
 	char *flags; \
 	key_type *keys; \
 	value_type *values; \
@@ -62,7 +62,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /** Initialize a empty hash table (no memory allocation performed). */
 #define ht_init(h) do { \
-	(h).size = (h).max_size = (h).capacity = 0; \
+	(h).size = (h).used = (h).max_used = (h).capacity = 0; \
 	(h).flags = NULL; \
 	(h).keys = NULL; \
 	(h).values = NULL; \
@@ -78,21 +78,24 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 /** Get number of elements stored in the hash table. */
 #define ht_size(h) ((h).size)
 
+/** Get maximum number of elements that are occupied in the hash table (inserted + deleted). */
+#define ht_used(h) ((h).used)
+
 /** Get maximum number of elements that can be stored in the hash table before rehashing. */
-#define ht_max_size(h) ((h).max_size)
+#define ht_max_used(h) ((h).max_used)
 
 /** Get total hash table size. */
 #define ht_capacity(h) ((h).capacity)
 
 /** Clear hash table */
-#define ht_clear(h) do { (h).size = 0; if ((h).flags) { memset((h).flags, 0, (h).capacity); } } while (0)
+#define ht_clear(h) do { (h).size = 0; (h).used = 0; if ((h).flags) { memset((h).flags, 0, (h).capacity); } } while (0)
 
 /**
  * Resize hash table to be able to hold at least new_capacity elements.
  * Success will be assigned to false in case of memory allocation failure.
  */
 #define ht_reserve(h, key_type, value_type, new_capacity, success, hash_func) do { \
-	if (new_capacity <= (h).max_size) { \
+	if (new_capacity <= (h).max_used) { \
 		(success) = true; \
 		break; \
 	} \
@@ -102,14 +105,14 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		(success) = false; \
 		break; \
 	} \
-	size_t ht_new_max_size = (ht_new_capacity >> 1) + (ht_new_capacity >> 2); \
-	if (ht_new_max_size < (new_capacity)) { \
+	size_t ht_new_max_used = (ht_new_capacity >> 1) + (ht_new_capacity >> 2); \
+	if (ht_new_max_used < (new_capacity)) { \
     	ht_new_capacity <<= 1; \
 		if (ht_new_capacity < (new_capacity)) { /* Integer overflow */ \
 			(success) = false; \
 			break; \
 		} \
-		ht_new_max_size = (ht_new_capacity >> 1) + (ht_new_capacity >> 2); \
+		ht_new_max_used = (ht_new_capacity >> 1) + (ht_new_capacity >> 2); \
     } \
 	char *ht_new_flags = malloc(ht_new_capacity); \
 	if (!ht_new_flags) { \
@@ -149,7 +152,8 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	(h).keys = ht_new_keys; \
 	(h).values = ht_new_values; \
 	(h).capacity = ht_new_capacity; \
-	(h).max_size = ht_new_max_size; \
+	(h).used = (h).size; \
+	(h).max_used = ht_new_max_used; \
 	(success) = true; \
 } while (0)
 
@@ -182,11 +186,11 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 #define ht_put(h, key_type, value_type, key, index, absent, hash_func, eq_func) do { \
 	bool ht_success; \
-	size_t ht_new_size = (h).size ? (h).size + 1 : 2; \
-	if (ht_new_size < (h).size) { /* Integer overflow */ \
+	size_t ht_new_size = (h).used ? (h).used + 1 : 2; \
+	if (ht_new_size < (h).used) { /* Integer overflow */ \
 		(absent) = -1; \
 		break; \
-	}\
+	} \
 	ht_reserve((h), key_type, value_type, ht_new_size, ht_success, hash_func); \
 	if (!ht_success) { \
 		(absent) = -1; \
@@ -201,6 +205,9 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	if ((h).flags[(index)] == 1) { \
 		(absent) = 0; \
 	} else { \
+        if ((h).flags[(index)] == 0) { \
+        	(h).used++; \
+		} \
 		(h).flags[(index)] = 1; \
 		(h).keys[(index)] = (key); \
 		(h).size++; \
