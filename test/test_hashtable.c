@@ -36,7 +36,7 @@ void test_hashtable_overflow(void) {
 	
 	ht_put_str(ht, int, "40", index, absent);
 	
-	ht_get_str(ht, "10", index); // Will hang is there is a bug
+	ht_get_str(ht, "10", index); // Will hang if there is a bug
 	
 	ht_destroy(ht);
 }
