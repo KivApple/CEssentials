@@ -95,9 +95,11 @@ static inline bool dynvec_try_realloc(void **ptr, size_t new_size) {
 #define dynvec_reserve(v, new_capacity, element_type) ( \
 	(new_capacity) > (v).capacity ? \
 		( \
-			dynvec_try_realloc((void**) &((v).data), (new_capacity) * sizeof(element_type)) ? \
-				((v).capacity = (new_capacity), true) : \
-				false \
+            (new_capacity) * sizeof(element_type) > (v).capacity * sizeof(element_type) ? ( \
+				dynvec_try_realloc((void**) &((v).data), (new_capacity) * sizeof(element_type)) ? \
+					((v).capacity = (new_capacity), true) : \
+					false \
+			) : false /* Integer overflow */ \
 		) : \
 		true \
 )
@@ -129,7 +131,13 @@ static inline bool dynvec_try_realloc(void **ptr, size_t new_size) {
 #define dynvec_append(v, element_type) ( \
 	(v).size < (v).capacity ? \
 		&dynvec_at((v), (v).size++) : \
-		(dynvec_reserve((v), (v).capacity ? (v).capacity * 2 : 16, element_type) ? &dynvec_at((v), (v).size++) : NULL) \
+		( \
+            (v).capacity <= SIZE_MAX / 2 ? ( \
+				dynvec_reserve((v), (v).capacity ? (v).capacity * 2 : 16, element_type) ? \
+					&dynvec_at((v), (v).size++) : \
+					NULL \
+			) : NULL /* Integer overflow */ \
+		) \
 )
 
 /**
@@ -142,9 +150,11 @@ static inline bool dynvec_try_realloc(void **ptr, size_t new_size) {
 #define dynvec_push(v, element_type, element) ( \
 	(v).size < (v).capacity ? \
 		((dynvec_at((v), (v).size++) = (element)), true) : ( \
-			dynvec_reserve((v), (v).capacity ? (v).capacity * 2 : 16, element_type) ? \
-				(dynvec_at((v), (v).size++) = (element), true) : \
-				false \
+            (v).capacity <= SIZE_MAX / 2 ? ( \
+				dynvec_reserve((v), (v).capacity ? (v).capacity * 2 : 16, element_type) ? \
+					(dynvec_at((v), (v).size++) = (element), true) : \
+					false                                      \
+			) : false /* Integer overflow */ \
 		) \
 )
 
