@@ -30,6 +30,8 @@ library will be available to your code.
   Generic dynamic vector container.
 - [hashtable.h](include/CEssentials/hashtable.h) -
   Generic hash table container with [quadratic probing](https://en.wikipedia.org/wiki/Quadratic_probing).
+- [hashset.h](include/CEssentials/hashset.h) -
+  Generic hash set container with [quadratic probing](https://en.wikipedia.org/wiki/Quadratic_probing).
 
 ## LICENSE
 

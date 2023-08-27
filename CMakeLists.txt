@@ -23,6 +23,7 @@ if(CMAKE_BINARY_DIR STREQUAL CMAKE_CURRENT_BINARY_DIR)
 			test/test_dynvec.c
 			test/test_dynstrsplit.c
 			test/test_hashtable.c
+			test/test_hashset.c
 	)
 	target_link_libraries(CEssentials_test CEssentials::CEssentials)
 endif()
