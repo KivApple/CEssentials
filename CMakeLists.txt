@@ -24,6 +24,7 @@ if(CMAKE_BINARY_DIR STREQUAL CMAKE_CURRENT_BINARY_DIR)
 			test/test_dynstrsplit.c
 			test/test_hashtable.c
 			test/test_hashset.c
+			test/test_qsort.c
 	)
 	target_link_libraries(CEssentials_test CEssentials::CEssentials)
 endif()

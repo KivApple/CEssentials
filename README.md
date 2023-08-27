@@ -32,6 +32,8 @@ library will be available to your code.
   Generic hash table container with [quadratic probing](https://en.wikipedia.org/wiki/Quadratic_probing).
 - [hashset.h](include/CEssentials/hashset.h) -
   Generic hash set container with [quadratic probing](https://en.wikipedia.org/wiki/Quadratic_probing).
+- [qsort.h](include/CEssentials/qsort.h) -
+  Generic QuickSort algorithm implementation.
 
 ## LICENSE
 

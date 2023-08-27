@@ -13,21 +13,6 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
 OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#include <stdio.h>
-#include "test_dynstr.h"
-#include "test_dynvec.h"
-#include "test_dynstrsplit.h"
-#include "test_hashtable.h"
-#include "test_hashset.h"
-#include "test_qsort.h"
+#pragma once
 
-int main() {
-	test_dynstr();
-	test_dynvec();
-	test_dynstrsplit();
-	test_hashtable();
-	test_hashset();
-	test_qsort();
-	fflush(stdout);
-	return 0;
-}
+void test_qsort(void);
