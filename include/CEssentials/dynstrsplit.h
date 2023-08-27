@@ -43,7 +43,7 @@ bool str_split(const char *s, const char *separator, int max_split, dynstr_list_
  *
  * If \p dest is not NULL, contents will be appended to this string.
  */
-dynstr dynstr_list_join(dynstr dest, dynstr_list_t *list, const char *separator);
+dynstr dynstr_list_join(dynstr dest, dynstr_list_t *list, const char *separator) DYNSTR_WARN_UNUSED;
 
 /**
  * Frees all strings stored inside the \p list and clears it afterwards.

@@ -65,6 +65,14 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define DYNSTR_FMT_ARG _Printf_format_string_
 #endif
 
+#if defined(__GNUC__)
+#define DYNSTR_WARN_UNUSED __attribute__((warn_unused_result))
+#elif defined(_MSC_VER)
+#define DYNSTR_WARN_UNUSED _Check_return_
+#else
+#define DYNSTR_WARN_UNUSED
+#endif
+
 /** A typedef for dynamic strings (just an alias for `char*`). */
 typedef char *dynstr;
 
@@ -84,37 +92,37 @@ typedef struct dynstr_header {
 #define dynstr_capacity(s) (dynstr_header(s)->capacity)
 
 /** Allocate a empty dynamic string with specified capacity */
-dynstr dynstr_alloc(size_t capacity);
+dynstr dynstr_alloc(size_t capacity) DYNSTR_WARN_UNUSED;
 
 /** Allocate a dynamic string from provided character array.
  *
  * If \p data is `NULL`, allocated a string of \p count characters without initialization. */
-dynstr dynstr_new_chars(const char *data, size_t count);
+dynstr dynstr_new_chars(const char *data, size_t count) DYNSTR_WARN_UNUSED;
 
 /** Allocate a dynamic string copying contents from NULL-terminated string */
-dynstr dynstr_new(const char *data);
+dynstr dynstr_new(const char *data) DYNSTR_WARN_UNUSED;
 
 /** Allocate a dynamic string using printf-formatted contents */
-dynstr dynstr_new_printf(DYNSTR_FMT_ARG const char *fmt, ...) DYNSTR_FMT_FUNC(1, 2);
+dynstr dynstr_new_printf(DYNSTR_FMT_ARG const char *fmt, ...) DYNSTR_FMT_FUNC(1, 2) DYNSTR_WARN_UNUSED;
 
 /** Allocate a dynamic string using printf-formatted contents using `va_list` arguments. */
-dynstr dynstr_new_vprintf(const char *fmt, va_list args);
+dynstr dynstr_new_vprintf(const char *fmt, va_list args) DYNSTR_WARN_UNUSED;
 
 /** Allocate a dynamic string copying existing dynamic string */
-dynstr dynstr_dup(dynstr s);
+dynstr dynstr_dup(dynstr s) DYNSTR_WARN_UNUSED;
 
 /** Free dynamic string. All dynamic strings should be freed by this function. Accepts NULL (as usual `free`). */
 void dynstr_free(dynstr s);
 
 /** Shrink dynamic string memory block to its actual length. */
-dynstr dynstr_shrink(dynstr s);
+dynstr dynstr_shrink(dynstr s) DYNSTR_WARN_UNUSED;
 
 /**
  * Increase dynamic string memory block to be able to hold at least \p capacity characters.
  *
  * If current string capacity is greater or equal to requested, does nothing.
  */
-dynstr dynstr_reserve(dynstr s, size_t capacity);
+dynstr dynstr_reserve(dynstr s, size_t capacity) DYNSTR_WARN_UNUSED;
 
 /**
  * Increase dynamic string memory block to be able to hold at least \p capacity characters.
@@ -124,14 +132,14 @@ dynstr dynstr_reserve(dynstr s, size_t capacity);
  * If current string capacity is less than desired capacity rounds up desired capacity to a nearest power of two
  * before reallocation.
  */
-dynstr dynstr_reserve2(dynstr s, size_t capacity);
+dynstr dynstr_reserve2(dynstr s, size_t capacity) DYNSTR_WARN_UNUSED;
 
 /**
  * Set dynamic string size.
  *
  * If \p size is greater than current string length, the contents of appended characters are undefined.
  */
-dynstr dynstr_resize(dynstr s, size_t size);
+dynstr dynstr_resize(dynstr s, size_t size) DYNSTR_WARN_UNUSED;
 
 /**
  * Set dynamic string size to zero.
@@ -141,43 +149,43 @@ dynstr dynstr_resize(dynstr s, size_t size);
 void dynstr_clear(dynstr s);
 
 /** Assign dynamic string from a character array. */
-dynstr dynstr_set_chars(dynstr s, const char *data, size_t count);
+dynstr dynstr_set_chars(dynstr s, const char *data, size_t count) DYNSTR_WARN_UNUSED;
 
 /** Assign dynamic string form a NULL-terminated C string. */
-dynstr dynstr_set(dynstr s, const char *data);
+dynstr dynstr_set(dynstr s, const char *data) DYNSTR_WARN_UNUSED;
 
 /** Copy one dynamic string into another. */
-dynstr dynstr_copy(dynstr dest, dynstr src);
+dynstr dynstr_copy(dynstr dest, dynstr src) DYNSTR_WARN_UNUSED;
 
 /**
  * Append a single character \p c` to dynamic string \p s.
  */
-dynstr dynstr_push(dynstr s, int c);
+dynstr dynstr_push(dynstr s, int c) DYNSTR_WARN_UNUSED;
 
 /**
  * Append a character array \p chars to a dynamic string.
  */
-dynstr dynstr_push_chars(dynstr s, const char *chars, size_t count);
+dynstr dynstr_push_chars(dynstr s, const char *chars, size_t count) DYNSTR_WARN_UNUSED;
 
 /**
  * Append a NULL-terminated C-string \p s to a dynamic string \p dest.
  */
-dynstr dynstr_append(dynstr dest, const char *s);
+dynstr dynstr_append(dynstr dest, const char *s) DYNSTR_WARN_UNUSED;
 
 /**
  * Append a dynamic string \p src to the end of a dynamic string \p dest
  */
-dynstr dynstr_cat(dynstr dest, dynstr src);
+dynstr dynstr_cat(dynstr dest, dynstr src) DYNSTR_WARN_UNUSED;
 
 /**
  * Append printf-formatted contents to a dynamic string \p dest.
  */
-dynstr dynstr_printf(dynstr dest, DYNSTR_FMT_ARG const char *fmt, ...) DYNSTR_FMT_FUNC(2, 3);
+dynstr dynstr_printf(dynstr dest, DYNSTR_FMT_ARG const char *fmt, ...) DYNSTR_FMT_FUNC(2, 3) DYNSTR_WARN_UNUSED;
 
 /**
  * Append printf-formatted contents to a dynamic string \p dest using `va_list` arguments.
  */
-dynstr dynstr_vprintf(dynstr dest, const char *fmt, va_list args);
+dynstr dynstr_vprintf(dynstr dest, const char *fmt, va_list args) DYNSTR_WARN_UNUSED;
 
 /**
  * In-place takes a substring of dynamic string.
@@ -206,14 +214,14 @@ void dynstr_trim(dynstr s, const char *chars);
  * Return value has the same meaning as `strcmp`
  * (0 - \p a equal to \p b, -1 - \p a less than \p b, 1 - \p a greater than \p b).
  */
-int dynstr_cmp(dynstr a, dynstr b);
+int dynstr_cmp(dynstr a, dynstr b) DYNSTR_WARN_UNUSED;
 
 /**
  * Join multiple dynamic strings into one using provided separator.
  *
  * \p if \p dest is NULL, a new string will be allocated, otherwise new strings will be appended to the existing one
  */
-dynstr dynstr_join(dynstr dest, size_t count, dynstr *src, const char *separator);
+dynstr dynstr_join(dynstr dest, size_t count, dynstr *src, const char *separator) DYNSTR_WARN_UNUSED;
 
 /**
  * Frees multiple dynamic strings (some of them possible to be NULL).
@@ -223,9 +231,9 @@ void dynstr_free_array(size_t count, dynstr *strings);
 /**
  * Verify that a dynamic string has prefix \p prefix.
  */
-bool dynstr_has_prefix(dynstr s, const char *prefix);
+bool dynstr_has_prefix(dynstr s, const char *prefix) DYNSTR_WARN_UNUSED;
 
 /**
  * Verify that a dynamic string has suffix \p suffix.
  */
-bool dynstr_has_suffix(dynstr s, const char *suffix);
+bool dynstr_has_suffix(dynstr s, const char *suffix) DYNSTR_WARN_UNUSED;
