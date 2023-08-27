@@ -31,7 +31,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef _MSC_VER
+#ifdef _WIN32
 #include <malloc.h>
 #ifndef alloca
 #define alloca _alloca
