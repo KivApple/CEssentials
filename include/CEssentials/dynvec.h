@@ -37,6 +37,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 /** Dynamic vector struct definition. */
 #define dynvec(element_type) struct { element_type *data; size_t size, capacity; }
